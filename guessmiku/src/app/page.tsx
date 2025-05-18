@@ -1,9 +1,12 @@
 import Image from "next/image";
 import styles from "./page.module.css";
+import Link from 'next/link'
 
 export default function Home() {
   return (
+
     <div className={styles.page}>
+    <div/>
       <main className={styles.main}>
         <Image
           className={styles.logo}
@@ -21,11 +24,9 @@ export default function Home() {
         </ol>
 
         <div className={styles.ctas}>
-          <a
+          <Link
             className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/game/maingame"
           >
             <Image
               className={styles.logo}
@@ -34,8 +35,8 @@ export default function Home() {
               width={20}
               height={20}
             />
-            Deploy now
-          </a>
+            Guess the Vocaloid Song!
+          </Link>
           <a
             href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
             target="_blank"
