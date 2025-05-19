@@ -33,7 +33,7 @@ export default function GuessSongPage() {
   )
 }
 
-export function SongList() {
+function SongList() {
 
   return (
     <TableContainer component={Paper} sx={{ maxWidth: 1200, margin: "auto" }}>
