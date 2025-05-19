@@ -1,12 +1,23 @@
+'use client';
+
 import Image from "next/image";
 import styles from "./page.module.css";
 import Link from 'next/link'
+import Button from '@mui/material/Button';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
 
     <div className={styles.page}>
-    <div/>
+      <div />
       <main className={styles.main}>
         <Image
           className={styles.logo}
@@ -24,19 +35,17 @@ export default function Home() {
         </ol>
 
         <div className={styles.ctas}>
-          <Link
-            className={styles.primary}
-            href="/game/maingame"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
+          <Button component={Link} href="/game/maingame" variant="contained" color="primary">
+            {isClient && (
+              <Image
+                src="/vercel.svg"
+                alt="Vercel logomark"
+                width={20}
+                height={20}
+              />
+            )}
             Guess the Vocaloid Song!
-          </Link>
+          </Button>
           <a
             href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
             target="_blank"
