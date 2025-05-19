@@ -23,7 +23,7 @@ export default function GuessSongPage() {
     <Box component="section" sx={{ p: 2, border: '1px dashed grey' }}>
       <h1>术力口猜歌!</h1>
       <p>输入歌曲名，点击搜索按钮，显示对应的歌曲信息</p>
-      <Container maxWidth="xs">
+      <Container maxWidth="xs" sx={{ mb: 2 }}>
         <AutocompleteClient />
       </Container>
       <Box>
