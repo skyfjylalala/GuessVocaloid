@@ -1,0 +1,2 @@
+# Local preview only. Set the real production value with: pnpm exec wrangler secret put SESSION_SECRET
+SESSION_SECRET=local-preview-only-change-this-before-deploying-5d59abf3

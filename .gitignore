@@ -1,0 +1,12 @@
+web/node_modules/
+web/dist/
+web/.wrangler/
+web/.local/
+web/.python-deps/
+web/.dev.vars
+web/data/raw/
+web/data/seed.sql
+web/data/export.sql
+web/*.tsbuildinfo
+web/test-results/
+web/.env*

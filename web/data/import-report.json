@@ -1,0 +1,11 @@
+{
+  "candidateRows": 3962,
+  "eligible": 2596,
+  "imported": 1000,
+  "missingYear": 0,
+  "missingBpm": 601,
+  "missingLength": 0,
+  "excludedCoversAndReprints": true,
+  "selection": "Original vocal synth songs (Vocaloid, UTAU, CeVIO, Synthesizer V and related singing voicebanks, excluding generic TTS); main vocalist grouped by character; composer/arranger/tuning credits; original PV with at least 1,000,000 snapshot views on Niconico, YouTube or Bilibili; top 1,000 by largest individual original-video view count.",
+  "snapshotRevision": "87d68d26e0e12c4206d5946d6d5766fe6f89324c (Hugging Face Parquet conversion)"
+}

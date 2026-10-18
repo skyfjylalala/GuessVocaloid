@@ -1,0 +1,81 @@
+name: Check and deploy
+
+on:
+  push:
+    branches: [dev]
+    paths:
+      - 'web/**'
+      - '.github/workflows/deploy.yml'
+  pull_request:
+    branches: [dev, main]
+    paths:
+      - 'web/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Test and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Install pnpm
+        run: npm install --global pnpm@11.25.0
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Rebuild catalog seed for tests
+        run: pnpm data:import
+      - name: Test
+        run: pnpm test
+      - name: Build
+        run: pnpm build
+
+  deploy:
+    name: Deploy dev to current website
+    needs: check
+    if: github.ref == 'refs/heads/dev' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: guess-vocaloid-production
+      cancel-in-progress: false
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Install pnpm
+        run: npm install --global pnpm@11.25.0
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build deployment
+        run: pnpm build
+      - name: Apply schema migrations and deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo '::error::Set repository secret CLOUDFLARE_API_TOKEN and variable CLOUDFLARE_ACCOUNT_ID. See docs/cicd.zh-CN.md.'
+            exit 1
+          fi
+          latest=$(git ls-remote origin refs/heads/dev | cut -f1)
+          if [ "$latest" != "$GITHUB_SHA" ]; then
+            echo 'A newer dev commit exists; skipping this older deployment.'
+            exit 0
+          fi
+          pnpm exec wrangler d1 migrations apply guess-vocaloid --remote
+          pnpm exec wrangler deploy
