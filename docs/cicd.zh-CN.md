@@ -4,6 +4,8 @@
 
 工作流文件：`.github/workflows/deploy.yml`。
 
+2026-10-18 已完成下面的一次性配置，并通过[首次真实自动部署](https://github.com/skyfjylalala/GuessVocaloid/actions/runs/39101668866)。当前仓库无需重复配置。
+
 ## 一次性配置
 
 1. 将本地新版本提交并推送到 GitHub 的 `dev` 分支。本机 Git 需要先完成 GitHub 登录，Cloudflare 的 Wrangler 登录不包含 GitHub 授权。
@@ -24,7 +26,7 @@ git commit -m "Describe this change"
 git push origin dev
 ```
 
-之后 GitHub 会自动安装依赖、生成测试用 SQL、运行测试、构建生产版本，通过后应用增量 schema migrations 并部署。部署串行执行，并跳过已经落后于远端 dev 的提交，避免旧代码覆盖新版本。失败时线上保持上一个已部署的应用版本；数据库迁移本身应保持向后兼容。
+当提交涉及 `web/` 或工作流文件时，GitHub 会自动安装依赖、生成测试用 SQL、运行测试、构建生产版本，通过后应用增量 schema migrations 并部署。只改说明文档不会触发部署。部署串行执行，并跳过已经落后于远端 dev 的提交，避免旧代码覆盖新版本。失败时线上保持上一个已部署的应用版本；数据库迁移本身应保持向后兼容。
 
 当前难度功能不修改数据库表或曲库内容，部署即可生效。不需要重新建 D1、重新登录或重新设置会话密钥。
 
@@ -39,4 +41,4 @@ git push origin dev
 - Cloudflare 403：检查令牌的账号范围与 Workers Scripts / D1 权限。
 - `pnpm install --frozen-lockfile` 失败：本地执行安装更新锁文件，将 `web/pnpm-lock.yaml` 与依赖变更一起提交。
 
-这是 GitHub Actions 与 Cloudflare 官方支持的外部 CI/CD 方式：[GitHub Actions 文档](https://developers.cloudflare.com/workers/ci-cd/external-cicd/github-actions/)。尚未完成一次真实 Actions 运行前，不把本地构建通过等同于 CI/CD 已启用。
+这是 GitHub Actions 与 Cloudflare 官方支持的外部 CI/CD 方式：[GitHub Actions 文档](https://developers.cloudflare.com/workers/ci-cd/external-cicd/github-actions/)。

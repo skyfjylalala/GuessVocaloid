@@ -18,12 +18,13 @@
 
 - 自动化测试：13 项通过，覆盖规则、搜索、会话、请求边界、真实曲库 SQLite、数据清洗、难度池边界及旧会话兼容。
 - 生产构建：TypeScript 检查、Worker 和 React 构建通过。
-- `wrangler deploy --dry-run` 成功，静态资源与 Worker 分目录，数据库和资源绑定可识别；未做远程部署。
+- `wrangler deploy --dry-run` 和远程发布成功，静态资源与 Worker 分目录，数据库和资源绑定可识别。
 - 本地 Worker/D1 及独立 Node/SQLite 的首页和健康接口均返回 HTTP 200。
 - 本地 D1 实际导出 SQL，恢复至独立 SQLite 文件，验证保留 1,000 首歌曲。
 - 浏览器实际操作：中文别名「千本樱」找到日文歌曲，键盘选择、提交比较、刷新后保留记录、揭晓、复制成功反馈、中日英切换、窄屏曲库弹窗。
 - 难度交互实测：默认初级 50 首，切换中级 200 首，已有猜测时切换需要确认，刷新保留难度。
-- 自动部署工作流已准备；首次真实 Actions 运行需 GitHub 仓库设置 `CLOUDFLARE_API_TOKEN`。账号 ID Variable 已配置。
+- GitHub Secret 和账号 ID Variable 已配置；[首次真实 Actions 运行](https://github.com/skyfjylalala/GuessVocaloid/actions/runs/39101668866) 的测试、构建、D1 migrations 和 Cloudflare 发布全部通过。后续推送 `dev` 的应用变更会自动部署。
+- 自动部署后线上健康接口返回 1,000 首；初级、中级、高级新局均返回 HTTP 200，题池分别为 50、200、1,000，进行中的答案不随响应返回。
 
 ## 已知范围
 
